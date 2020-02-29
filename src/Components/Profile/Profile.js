@@ -31,7 +31,11 @@ const Profile = ({ currentUser, recipes, users, match }) => {
               <p className="profile-bio">{info.profilebio}</p>
               {isCurrentUser ? (
                 <div className="current-user-buttons">
-                  <button className="edit-profile-button">Edit Profile</button>
+                  <button className="edit-profile-button">
+                    <Link to={`/profile/${currentUser}/edit`}>
+                      Edit Profile
+                    </Link>
+                  </button>
                   <button className="saved-recipes-button">
                     <Link to={`/profile/${currentUser}/stars`}>My ☆s</Link>
                   </button>
@@ -43,6 +47,7 @@ const Profile = ({ currentUser, recipes, users, match }) => {
       </section>
       <section className="profile-recipes">
         <h4 className="recipes-head">My Recipes</h4>
+
         <div className="recipes-flexbox">
           {userRecipes.map((recipe, i) => (
             <RecipeThumbnail
@@ -59,4 +64,8 @@ const Profile = ({ currentUser, recipes, users, match }) => {
 
 export default Profile;
 
-//{isCurrentUser && "Edit Profile";}
+/* {isCurrentUser ? (
+          <button className="add-recipe-button">
+            <Link to={`/profile/${currentUser}/addrecipe`}>+</Link>
+          </button>
+        ) : null} */

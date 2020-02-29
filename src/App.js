@@ -5,6 +5,7 @@ import { userAuth } from "./Services/userAuth";
 import { Redirect } from "react-router-dom";
 import { getAllRecipes } from "./Services/getAllRecipes";
 import { getAllUsers } from "./Services/getAllUsers";
+import { editProfile } from "./Services/editProfile";
 
 import HomePage from "./Components/HomePage/HomePage";
 import LoginOrSignup from "./Components/Account/LoginOrSignup";
@@ -15,6 +16,8 @@ import Profile from "./Components/Profile/Profile";
 import Navigation from "./Components/HomePage/Navigation";
 import Recipe from "./Components/Recipe/Recipe";
 import Stars from "./Components/Stars/Stars";
+import EditProfilePg from "./Components/Profile/EditProfilePg";
+import AddRecipe from "./Components/Recipe/AddRecipe";
 
 export default class App extends Component {
   state = {
@@ -96,25 +99,32 @@ export default class App extends Component {
         password,
         profilepicture,
         profilebio
-      );
-
-      this.setState(
-        {
-          firstname: "",
-          lastname: "",
-          password: "",
-          confirmpassword: "",
-          profilepicture: "",
-          loggedin: true,
-          redirecttofeed: true
-        },
-        () => {
-          if (typeof Storage !== "undefined") {
-            localStorage.setItem("username", this.state.username);
-            localStorage.setItem("loggedin", this.state.loggedin);
-          }
+      ).then(res => {
+        if (res === "OK") {
+          console.log(res);
+          this.setState(
+            {
+              firstname: "",
+              lastname: "",
+              password: "",
+              confirmpassword: "",
+              profilepicture: "",
+              loggedin: true,
+              redirecttofeed: true
+            },
+            () => {
+              if (typeof Storage !== "undefined") {
+                localStorage.setItem("username", this.state.username);
+                localStorage.setItem("loggedin", this.state.loggedin);
+              }
+            }
+          );
+        } else {
+          window.alert(
+            "Sorry, looks like something is missing. Please make sure you filled out all the fields."
+          );
         }
-      );
+      });
     }
   };
 
@@ -157,13 +167,55 @@ export default class App extends Component {
       }
       localStorage.removeItem("loggedin");
     }
-
     window.location.href = "/";
   };
 
   renderFeed = () => {
     if (this.state.redirecttofeed) {
       return <Redirect to="/feed" />;
+    }
+  };
+
+  handleEditProfile = e => {
+    e.preventDefault();
+    const {
+      firstname,
+      lastname,
+      username,
+      password,
+      confirmpassword,
+      profilepicture,
+      profilebio
+    } = this.state;
+    if (password && confirmpassword && password !== confirmpassword) {
+      window.alert("Passwords do not match.");
+    } else if (password && confirmpassword && password.length < 8) {
+      window.alert("Password must be 8 or more characters.");
+    } else {
+      editProfile(
+        firstname,
+        lastname,
+        username,
+        password,
+        profilepicture,
+        profilebio
+      );
+      this.setState(
+        {
+          firstname: "",
+          lastname: "",
+          password: "",
+          confirmpassword: "",
+          profilepicture: "",
+          loggedin: true
+        },
+        () => {
+          if (typeof Storage !== "undefined") {
+            localStorage.setItem("username", this.state.username);
+            localStorage.setItem("loggedin", this.state.loggedin);
+          }
+        }
+      );
     }
   };
 
@@ -254,6 +306,7 @@ export default class App extends Component {
           )}
         />
         <Route
+          exact
           path="/recipe/:recipename"
           render={props => (
             <>
@@ -262,8 +315,25 @@ export default class App extends Component {
           )}
         />
         <Route
+          exact
           path="/profile/:username/stars"
           render={props => <Stars currentUser={this.state.username} />}
+        />
+        <Route
+          exact
+          path="/profile/:username/edit"
+          render={props => (
+            <EditProfilePg
+              userData={this.state}
+              handleFormChange={this.handleFormChange}
+              handleEditProfile={this.handleEditProfile}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/profile/:username/addrecipe"
+          render={props => <AddRecipe />}
         />
       </Router>
     );
