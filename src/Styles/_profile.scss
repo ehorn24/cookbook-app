@@ -67,6 +67,29 @@
   }
   .profile-recipes {
     margin-bottom: 100px;
+    .add-recipe-button {
+      border-radius: 100%;
+      border: 2px solid #1e3ca6;
+      height: 35px;
+      width: 35px;
+      margin: 12px 10px;
+      text-decoration: none;
+      font-family: "Raleway";
+      font-weight: 700;
+      font-size: 35px;
+      color: white;
+      background-color: #1e3ca6;
+      text-align: center;
+      cursor: pointer;
+      float: right;
+
+      &:hover {
+        border: 2px solid white;
+      }
+      &:active {
+        background-color: #5c7df2;
+      }
+    }
     .recipes-head {
       text-align: center;
       font-family: "Allura";
