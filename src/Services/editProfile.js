@@ -1,18 +1,16 @@
 export const editProfile = (
-  currentUser,
+  id,
   firstname,
   lastname,
-  username,
   password,
   profilepicture,
   profilebio
 ) => {
-  return fetch(`/api/users/${currentUser}`, {
+  return fetch(`/api/users/${id}`, {
     method: "PATCH",
     body: JSON.stringify({
       firstname,
       lastname,
-      username,
       password,
       profilepicture,
       profilebio
@@ -20,5 +18,5 @@ export const editProfile = (
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(res => res.json());
+  });
 };
