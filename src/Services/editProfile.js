@@ -19,4 +19,5 @@ export const editProfile = (
       "Content-Type": "application/json"
     }
   });
+
 };

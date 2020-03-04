@@ -82,14 +82,14 @@ const Signup = ({
             <label htmlFor="profilebio" className="field-label">
               <span className="label-span">Bio</span>
             </label>
-            <input
+            <textarea
               type="text"
               name="profilebio"
               id="profilebio"
               onChange={handleFormChange}
               value={userData.profilebio}
               className="field-input"
-            />
+            ></textarea>
             <button type="submit" className="signup-button">
               Submit
             </button>
