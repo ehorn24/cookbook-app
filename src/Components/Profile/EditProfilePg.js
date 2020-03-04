@@ -1,13 +1,23 @@
 import React from "react";
 
-const EditProfilePg = ({ handleFormChange, handleEditProfile, userData }) => {
+const EditProfilePg = ({
+  handleFormChange,
+  handleEditProfile,
+  userData,
+  userId
+}) => {
   return (
     <main className="edit-profile-page">
       <h1 className="edit-profile-tagline">
         Edit any part of your profile here.
       </h1>
       <div className="edit-form-container">
-        <form onSubmit={handleEditProfile} className="edit-profile-form">
+        <form
+          onSubmit={e => {
+            handleEditProfile(e, userId.id);
+          }}
+          className="edit-profile-form"
+        >
           <fieldset className="edit-profile-fieldset">
             <label htmlFor="firstname" className="field-label">
               <span className="label-span">First Name</span>
@@ -29,17 +39,6 @@ const EditProfilePg = ({ handleFormChange, handleEditProfile, userData }) => {
               id="lastname"
               onChange={handleFormChange}
               value={userData.lastname}
-              className="field-input"
-            />
-            <label htmlFor="username" className="field-label">
-              <span className="label-span">Username</span>
-            </label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              onChange={handleFormChange}
-              value={userData.username}
               className="field-input"
             />
             <label htmlFor="password" className="field-label">

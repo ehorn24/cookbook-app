@@ -27,6 +27,7 @@ export default class App extends Component {
     password: "",
     confirmpassword: "",
     profilepicture: "",
+    profilebio: "",
     loggedin: false,
     redirecttofeed: false,
     recipes: [],
@@ -58,6 +59,10 @@ export default class App extends Component {
         });
       }
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    localStorage.state = JSON.stringify(this.state);
   }
 
   getRecipes = () => {
@@ -100,8 +105,7 @@ export default class App extends Component {
         profilepicture,
         profilebio
       ).then(res => {
-        if (res === "OK") {
-          console.log(res);
+        if (!res.error) {
           this.setState(
             {
               firstname: "",
@@ -110,7 +114,8 @@ export default class App extends Component {
               confirmpassword: "",
               profilepicture: "",
               loggedin: true,
-              redirecttofeed: true
+              redirecttofeed: true,
+              users: [...this.state.users, res]
             },
             () => {
               if (typeof Storage !== "undefined") {
@@ -176,12 +181,12 @@ export default class App extends Component {
     }
   };
 
-  handleEditProfile = e => {
+
+  handleEditProfile = (e, id) => {
     e.preventDefault();
     const {
       firstname,
       lastname,
-      username,
       password,
       confirmpassword,
       profilepicture,
@@ -193,9 +198,9 @@ export default class App extends Component {
       window.alert("Password must be 8 or more characters.");
     } else {
       editProfile(
+        id,
         firstname,
         lastname,
-        username,
         password,
         profilepicture,
         profilebio
@@ -216,6 +221,7 @@ export default class App extends Component {
           }
         }
       );
+      window.location.href = `/profile/${this.state.username}`;
     }
   };
 
@@ -325,6 +331,11 @@ export default class App extends Component {
           render={props => (
             <EditProfilePg
               userData={this.state}
+              userId={
+                this.state.users.filter(
+                  user => user.username === this.state.username
+                )[0]
+              }
               handleFormChange={this.handleFormChange}
               handleEditProfile={this.handleEditProfile}
             />
