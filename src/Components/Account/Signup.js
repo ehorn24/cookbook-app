@@ -102,6 +102,11 @@ const Signup = ({
           here!
         </Link>
       </h4>
+      <img
+        className="signup-fruit"
+        src="https://crispygreen.com/wp-content/uploads/2018/04/image-apples-hero.png"
+        alt="fruit"
+      />
     </main>
   );
 };
